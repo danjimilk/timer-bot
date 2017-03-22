@@ -1,6 +1,7 @@
 const requestSender = require('request');
 
-module.exports.reply = function (channelAccessToken, replyToken, messages) {
+module.exports.send = function (channelAccessToken, replyToken, messages) {
+	console.log('[Channel access token]', channelAccessToken);
 	var headers = {
 		'Content-type' : 'application/json',
 		'Authorization' : 'Bearer ' + channelAccessToken
@@ -17,12 +18,12 @@ module.exports.reply = function (channelAccessToken, replyToken, messages) {
 	};
 
 	requestSender(options, function (error, response, body) {
-		console.log('response', response.statusCode);
+	//	console.log('response', response.statusCode);
 
 		if (!error && response.statusCode == 200) {
 			console.log(body)
 		} else {
 			console.log('requestSender', error);	
 		}
-	})
+	});
 };
