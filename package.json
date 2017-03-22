@@ -1,0 +1,22 @@
+{
+  "name": "timer-bot",
+  "version": "1.0.0",
+  "description": "Timer-bot is a line chatting bot that creates and manages simple alarms with line message. This bot can be used for group chatting room that requires time saving such as remote conference and meeting.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danjimilk/timer-bot.git"
+  },
+  "author": "Jeongil Kang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danjimilk/timer-bot/issues"
+  },
+  "homepage": "https://github.com/danjimilk/timer-bot#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
