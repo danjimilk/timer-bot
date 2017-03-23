@@ -8,7 +8,7 @@ module.exports.getHelp = function () {
 	}
 
 	messages[0].type = 'text';
-	messages[0].text = 'Here are commands: \n\n/help: Show you help';
+	messages[0].text = 'Here are commands: \n\n/help: Show you bot help.';
 	messages[1].type = 'text';
 	messages[1].text = '/[number]: \nAdd simple alarm (default alarm) with the input number. (unit:min.)\n\n/[name] [number]: \nAdd an alarm that has the name you defined.';
 	messages[2].type = 'text';
