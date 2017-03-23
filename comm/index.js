@@ -14,9 +14,9 @@ module.exports.getHelp = function () {
 	messages[2].type = 'text';
 	messages[2].text = '/list: \nList all alarms (include default alarm) with theri remain time.\n\n/[name]: \nDisplay the alarm that has name you input.';
 	messages[3].type = 'text';
-	messages[3].text = '/clear: \nRemove all alarms.\n/clear [name]: \n\nRemove the alarm that has name you input.';
+	messages[3].text = '/clear: \nRemove all alarms.\n\n/clear [name]: \nRemove the alarm that has name you input.';
 	messages[4].type = 'text';
-	messages[4].text = 'If you need more help. Contact me. (danji_milk@naver.com)';
+	messages[4].text = 'This bot is under development. These commands will not work correctly now. The commands implemented not yet, work as echo message. If you need more help. Contact me. (danji_milk@naver.com)';
 
 	console.log('[Help message]', messages);
 	return messages;
