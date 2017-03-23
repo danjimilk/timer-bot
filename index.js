@@ -25,7 +25,7 @@ app.post('/hook', function (request, response) {
 	console.log('[request message]', eventObj.message);
 	console.log('======================================================================');
 
-	if ( message.type !== "text" || message.text.indexOf("help") != -1 ){
+	if ( message.type !== "text" || message.text.indexOf("/help") != -1 ){
 		reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.getHelp());
 	} else {
 		// Echo
