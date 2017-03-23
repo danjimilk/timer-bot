@@ -3,7 +3,7 @@ const requestSender = require('request');
 module.exports.send = function (channelAccessToken, replyToken, messages) {
 	console.log('[Channel access token]', channelAccessToken);
 	var headers = {
-		'Content-type' : 'application/json',
+		'Content-type' : 'application/json;',
 		'Authorization' : 'Bearer ' + channelAccessToken
 	};
 
