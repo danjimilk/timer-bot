@@ -30,7 +30,7 @@ module.exports.sendEchoMsg = function(userMessage) {
 
 	messages[1] = {};
 	messages[1].type = 'text';
-	messages[1].text = 'Bad command, I just repeated your message. For more information, input \'\/help\''
+	messages[1].text = 'Bad command, I just repeated your message. For more information, input \'\/help\' or \'\/h\''
 
 	return messages;	
 }

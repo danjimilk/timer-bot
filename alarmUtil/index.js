@@ -1,10 +1,10 @@
 const comm = require('./../comm');
 const config = require('./../config');
-const reply = require('./../reply');
+const push = require('./../push');
 
 var alarmList = new Array();
 
-module.exports.addAlarm = function (targetAlarmName, time, replyToken) {
+module.exports.addAlarm = function (targetAlarmName, time, userId) {
 
 	// Find alarm name in alarmList to check whether the alarm name already exist or not. And if same alarm name exist in alarmList, it will update with new on.
 	var i;
@@ -23,10 +23,10 @@ module.exports.addAlarm = function (targetAlarmName, time, replyToken) {
 	var alarm = {};
 	alarm.name = targetAlarmName;
 	alarm.expTime = (new Date()).getTime() + alarmSize;
-	alarm.timeoutPointer = setTimeout(function(targetAlarmName, replyToken) {
+	alarm.timeoutPointer = setTimeout(function(targetAlarmName, userId) {
 
 			console.log(targetAlarmName + ' alarm has been expired');
-			reply.send(config.CHANNEL_ACCESS_TOKEN, replyToken, comm.sendAlarm(targetAlarmName));
+			push.send(config.CHANNEL_ACCESS_TOKEN, userId, comm.sendAlarm(targetAlarmName));
 
 			// Remove the expired alarm info.
 			for (var i = 0; i < alarmList.length; i++) {
@@ -38,7 +38,7 @@ module.exports.addAlarm = function (targetAlarmName, time, replyToken) {
 				}
 			}
 
-		}, alarmSize, alarm.name, replyToken);
+		}, alarmSize, alarm.name, userId);
 
 	alarmList[i] = alarm;
 }

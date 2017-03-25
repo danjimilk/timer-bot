@@ -38,7 +38,7 @@ app.post('/hook', function (request, response) {
 			// Check whether the first arguments is number type or not.
 			if (!isNaN(parseInt(cmdArgs[0]))){
 				// Add simple alarm (default alarm)
-				alarmUtil.addAlarm("default", cmdArgs[0], eventObj.replyToken);
+				alarmUtil.addAlarm("default", cmdArgs[0], eventObj.source.userId);
 				alarmUtil.listAlarmsToConsole();
 				reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforAddedAlarm("default"));
 			}
@@ -82,7 +82,7 @@ app.post('/hook', function (request, response) {
 			}
 			else if ( (isNaN(parseInt(cmdArgs[0]))) && (!isNaN(parseInt(cmdArgs[1]))) ){
 				// Add alarm 
-				alarmUtil.addAlarm(cmdArgs[0], cmdArgs[1], eventObj.replyToken);
+				alarmUtil.addAlarm(cmdArgs[0], cmdArgs[1], eventObj.source.userId);
 				alarmUtil.listAlarmsToConsole();
 				reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforAddedAlarm(cmdArgs[0]));
 			}
