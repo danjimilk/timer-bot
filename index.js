@@ -5,6 +5,7 @@ const config = require('./config');
 const bodyParser = require('body-parser');
 const reply = require('./reply');
 const comm = require('./comm');
+const alarmUtil = require('./alarmUtil');
 
 var app = express();
 app.use(bodyParser.json());
@@ -25,11 +26,78 @@ app.post('/hook', function (request, response) {
 	console.log('[request message]', eventObj.message);
 	console.log('======================================================================');
 
-	if ( message.type !== "text" || message.text.indexOf("/help") != -1 ){
-		reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.getHelp());
-	} else {
+	if ( message.type !== "text" ){
+		// Show help when user inputs message not as text.
+		reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendHelpMsg());
+	}
+	else if (message.text.startsWith('/')){
+		var timerCmd = message.text.substring(1, message.text.length);
+		var cmdArgs = timerCmd.split(' ');
+
+		if (cmdArgs.length == 1) {
+			// Check whether the first arguments is number type or not.
+			if (!isNaN(parseInt(cmdArgs[0]))){
+				// Add simple alarm (default alarm)
+				alarmUtil.addAlarm("default", cmdArgs[0]);
+				alarmUtil.listAlarmsToConsole();
+				reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforAddedAlarm("default"));
+			}
+			else {
+				// Text type command, command stand-alone type.
+				if (cmdArgs[0] === 'h' || cmdArgs[0] == 'help'){
+					// Process help command.
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendHelpMsg());
+				}
+				else if (cmdArgs[0] === 'list' || cmdArgs[0] == 'l') {
+					// Process list command. List information of all alarms (name and remain time).
+					alarmUtil.listAlarmsToConsole();
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendAlarmInfo(alarmUtil.listAlarms()));
+				}
+				else if (cmdArgs[0] === 'clear') {
+					// Process clear command, means clear all.
+					alarmUtil.clearAllAlarms();
+					alarmUtil.listAlarmsToConsole();
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforClearingAllAlarms());
+				}
+				else {
+					// Get specific alarm information.
+					alarmUtil.listAlarmsToConsole();
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendAlarmInfo(alarmUtil.findAlarm(cmdArgs[0])));
+				}
+
+			}
+		}
+		else if (cmdArgs.length ==2) {
+			if (cmdArgs[0] === 'rm' && isNaN(parseInt(cmdArgs[1]))) {
+				var findResult = alarmUtil.findAlarm(cmdArgs[1]);
+				if (findResult.length == 0) {
+					alarmUtil.listAlarmsToConsole();
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendAlarmInfo(findResult));
+				}
+				else {
+					alarmUtil.removeAlarm(cmdArgs[1]);
+					alarmUtil.listAlarmsToConsole();
+					reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforRemovingAlarm(cmdArgs[1]));
+				}
+			}
+			else if ( (isNaN(parseInt(cmdArgs[0]))) && (!isNaN(parseInt(cmdArgs[1]))) ){
+				// Add alarm 
+				alarmUtil.addAlarm(cmdArgs[0], cmdArgs[1]);
+				alarmUtil.listAlarmsToConsole();
+				reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendSuccessMsgforAddedAlarm(cmdArgs[0]));
+			}
+			else {
+				reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendErrorMsg());
+			}
+		}
+		else {
+			reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendErrorMsg());
+		}
+		
+	}
+	else {
 		// Echo
-		reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.echo(message.text));
+		reply.send(config.CHANNEL_ACCESS_TOKEN, eventObj.replyToken, comm.sendEchoMsg(message.text));
 	}
 
     response.sendStatus(200);
@@ -43,5 +111,5 @@ var https_options = {
 };
 
 https.createServer(https_options, app).listen(443, function(){
-    console.log("Timer-bot is running");
+    console.log("Timer-bot is running.");
 });
