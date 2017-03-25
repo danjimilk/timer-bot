@@ -48,7 +48,7 @@ module.exports.sendSuccessMsgforAddedAlarm = function(alarmName) {
 	var messages = [];
 	messages[0] = {};
 	messages[0].type = 'text';
-	messages[0].text = 'I set alarm \'' + alarmName + '\'. I will remind you on time.';
+	messages[0].text = 'I added/updated alarm \'' + alarmName + '\'. I will remind you on time.';
 
 	return messages;
 }
