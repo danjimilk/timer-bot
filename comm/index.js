@@ -103,3 +103,12 @@ module.exports.sendSuccessMsgforRemovingAlarm = function (targetAlarmName) {
 
 	return messages;
 }
+
+module.exports.sendAlarm = function (targetAlarmName) {
+	var messages = [];
+	messages[0] = {};
+	messages[0].type = 'text';
+	messages[0].text = 'Time`s up. (Alarm \'' + targetAlarmName + '\')';
+
+	return messages;
+}
